@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'dva';
 import styles from './main.css';
 import {
   Badge,
@@ -87,6 +88,9 @@ class MainComponent extends React.Component {
   showModal = type => {
     // this.formRef.props.form.setFieldsValue({ type: type });
     this.setState({ visible: true });
+    this.props.dispatch({
+      type: 'feedback/query'
+  });
   };
 
   handleCancel = () => {
@@ -263,6 +267,11 @@ class MainComponent extends React.Component {
   }
 }
 
-export default function() {
-  return <MainComponent />;
+function mapStateToProps(state) {
+  console.log('STATE');
+  console.log(state);
+  return { list: state.feedback.feedbackList };
 }
+
+export default connect(mapStateToProps)(MainComponent);
+
