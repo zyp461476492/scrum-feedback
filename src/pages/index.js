@@ -24,7 +24,7 @@ const { Option } = Select;
 const FeedbackForm = Form.create({ name: 'feedbackForm' })(
   class extends React.Component {
     render() {
-      const { visible, onCancel, onCreate, form } = this.props;
+      const { visible, onCancel, onCreate, form, confirmLoading } = this.props;
       const { getFieldDecorator } = form;
       const labelCol = { span: 4 };
 
@@ -33,6 +33,7 @@ const FeedbackForm = Form.create({ name: 'feedbackForm' })(
           visible={visible}
           title="feedback"
           okText="Create"
+          confirmLoading={confirmLoading}
           onCancel={onCancel}
           onOk={onCreate}
         >
@@ -87,14 +88,15 @@ class MainComponent extends React.Component {
 
   showModal = type => {
     // this.formRef.props.form.setFieldsValue({ type: type });
-    this.setState({ visible: true });
     this.props.dispatch({
-      type: 'feedback/query'
-  });
+      type: 'feedback/showModal',
+    });
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.props.dispatch({
+      type: 'feedback/hiddenModal',
+    });
   };
 
   handleCreate = () => {
@@ -103,8 +105,12 @@ class MainComponent extends React.Component {
       if (err) {
         return;
       }
+      // 保存数据
+      this.props.dispatch({
+        type: 'feedback/add',
+        payload: values,
+      });
       form.resetFields();
-      this.setState({ visible: false });
     });
   };
 
@@ -117,8 +123,9 @@ class MainComponent extends React.Component {
       <Row gutter={8} className={styles.wrapper}>
         <FeedbackForm
           wrappedComponentRef={this.saveFormRef}
-          visible={this.state.visible}
+          visible={this.props.visible}
           type={this.state.type}
+          confirmLoading={this.props.loading}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
         />
@@ -270,8 +277,11 @@ class MainComponent extends React.Component {
 function mapStateToProps(state) {
   console.log('STATE');
   console.log(state);
-  return { list: state.feedback.feedbackList };
+  return {
+    list: state.feedback.feedbackList,
+    visible: state.feedback.visible,
+    loading: state.loading.models.feedback,
+  };
 }
 
 export default connect(mapStateToProps)(MainComponent);
-
