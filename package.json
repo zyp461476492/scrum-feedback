@@ -12,6 +12,7 @@
     "dva": "^2.6.0-beta.6",
     "lokijs": "^1.5.6",
     "pouchdb-adapter-idb": "^7.1.1",
+    "pouchdb-adapter-memory": "^7.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "rxdb": "^8.2.1",

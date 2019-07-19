@@ -13,6 +13,7 @@ import {
   Select,
   Timeline,
   Typography,
+  Button,
 } from 'antd';
 
 const { Text } = Typography;
@@ -167,129 +168,136 @@ class MainComponent extends React.Component {
 
   render() {
     const { smile, meh, frown } = feedbackFilter(this.props.list);
-    console.log(this.props.list.length);
     return (
-      <Row gutter={8} className={styles.wrapper}>
-        <FeedbackForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.props.visible}
-          type={this.state.type}
-          confirmLoading={this.props.loading}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-        <Col span={8} className={styles.item}>
-          <div className={styles.itemHeader}>
-            <div className={styles.left}>
-              <Badge
-                count={12}
-                style={{
-                  fontSize: '20px',
-                  verticalAlign: 'middle',
-                  backgroundColor: '#fff',
-                  color: '#999',
-                }}
-              />
-              <Icon
-                style={{ marginLeft: '5px', verticalAlign: 'middle', fontSize: '20px' }}
-                type="smile"
-                theme="twoTone"
-                twoToneColor="#52c41a"
-              />
-            </div>
-            <div className={styles.right}>
-              <Icon
-                onClick={this.showModal}
-                style={{
-                  marginRight: '5px',
-                  verticalAlign: 'middle',
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                }}
-                type="plus-circle"
-              />
-            </div>
+      <div>
+        <Row gutter={8} className={styles.opWrapper}>
+          <div className={styles.right}>
+            <Button onClick={this.showModal} type="primary">
+              新增
+            </Button>
           </div>
-          <div className={styles.itemBody}>
-            <FeedbackCardList feedbackList={smile} color="green" />
-          </div>
-        </Col>
-        <Col span={8} className={styles.item}>
-          <div className={styles.itemHeader}>
-            <div className={styles.left}>
-              <Badge
-                count={2}
-                style={{
-                  fontSize: '20px',
-                  verticalAlign: 'middle',
-                  backgroundColor: '#fff',
-                  color: '#999',
-                }}
-              />
-              <Icon
-                style={{ marginLeft: '5px', verticalAlign: 'middle', fontSize: '20px' }}
-                type="meh"
-                theme="twoTone"
-              />
+        </Row>
+        <Row gutter={8} className={styles.wrapper}>
+          <FeedbackForm
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.props.visible}
+            type={this.state.type}
+            confirmLoading={this.props.loading}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+          />
+          <Col span={8} className={styles.item}>
+            <div className={styles.itemHeader}>
+              <div className={styles.left}>
+                <Badge
+                  count={smile.length}
+                  style={{
+                    fontSize: '20px',
+                    verticalAlign: 'middle',
+                    backgroundColor: '#fff',
+                    color: '#999',
+                  }}
+                />
+                <Icon
+                  style={{ marginLeft: '5px', verticalAlign: 'middle', fontSize: '20px' }}
+                  type="smile"
+                  theme="twoTone"
+                  twoToneColor="#52c41a"
+                />
+              </div>
+              <div className={styles.right}>
+                进步
+                {/* <Icon
+                  onClick={this.showModal}
+                  style={{
+                    marginRight: '5px',
+                    verticalAlign: 'middle',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                  }}
+                  type="plus-circle"
+                /> */}
+              </div>
             </div>
-            <div className={styles.right}>
-              <Icon
-                onClick={this.showModal}
-                style={{
-                  marginRight: '5px',
-                  verticalAlign: 'middle',
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                }}
-                type="plus-circle"
-              />
+            <div className={styles.itemBody}>
+              <FeedbackCardList feedbackList={smile} color="green" />
             </div>
-          </div>
-          <div className={styles.itemBody}>
+          </Col>
+          <Col span={8} className={styles.item}>
+            <div className={styles.itemHeader}>
+              <div className={styles.left}>
+                <Badge
+                  count={meh.length}
+                  style={{
+                    fontSize: '20px',
+                    verticalAlign: 'middle',
+                    backgroundColor: '#fff',
+                    color: '#999',
+                  }}
+                />
+                <Icon
+                  style={{ marginLeft: '5px', verticalAlign: 'middle', fontSize: '20px' }}
+                  type="meh"
+                  theme="twoTone"
+                />
+              </div>
+              <div className={styles.right}>
+                无变化
+                {/* <Icon
+                  onClick={this.showModal}
+                  style={{
+                    marginRight: '5px',
+                    verticalAlign: 'middle',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                  }}
+                  type="plus-circle"
+                /> */}
+              </div>
+            </div>
             <div className={styles.itemBody}>
               <FeedbackCardList feedbackList={meh} color="blue" />
             </div>
-          </div>
-        </Col>
-        <Col span={8} className={styles.item}>
-          <div className={styles.itemHeader}>
-            <div className={styles.left}>
-              <Badge
-                count={1}
-                style={{
-                  fontSize: '20px',
-                  verticalAlign: 'middle',
-                  backgroundColor: '#fff',
-                  color: '#999',
-                }}
-              />
-              <Icon
-                style={{ marginLeft: '5px', verticalAlign: 'middle', fontSize: '20px' }}
-                type="frown"
-                theme="twoTone"
-                twoToneColor="red"
-              />
+          </Col>
+          <Col span={8} className={styles.item}>
+            <div className={styles.itemHeader}>
+              <div className={styles.left}>
+                <Badge
+                  count={frown.length}
+                  style={{
+                    fontSize: '20px',
+                    verticalAlign: 'middle',
+                    backgroundColor: '#fff',
+                    color: '#999',
+                  }}
+                />
+                <Icon
+                  style={{ marginLeft: '5px', verticalAlign: 'middle', fontSize: '20px' }}
+                  type="frown"
+                  theme="twoTone"
+                  twoToneColor="red"
+                />
+              </div>
+              <div className={styles.right}>
+                待改进
+                {/* <Icon
+                  onClick={this.showModal}
+                  style={{
+                    marginRight: '5px',
+                    verticalAlign: 'middle',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                  }}
+                  type="plus-circle"
+                /> */}
+              </div>
             </div>
-            <div className={styles.right}>
-              <Icon
-                onClick={this.showModal}
-                style={{
-                  marginRight: '5px',
-                  verticalAlign: 'middle',
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                }}
-                type="plus-circle"
-              />
-            </div>
-          </div>
-          <div className={styles.itemBody}>
             <div className={styles.itemBody}>
               <FeedbackCardList feedbackList={frown} color="red" />
             </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

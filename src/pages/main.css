@@ -1,11 +1,23 @@
 .wrapper {
   position: absolute;
-  top: 5%;
+  top: 8%;
   bottom: 5%;
   left: 2%;
   right: 2%;
   background: #ffffff;
   padding: 24px;
+}
+
+.opWrapper {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  background: #ffffff;
+  padding: 24px;
+}
+
+.opRight {
+  float: right
 }
 
 .item {
