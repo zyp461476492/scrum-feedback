@@ -1,4 +1,4 @@
-import * as feedbackService from '../service/feedback';
+import * as feedbackService from '../services/feedback';
 
 export default {
     namespace: 'feedback',
@@ -14,8 +14,7 @@ export default {
     },
     effects: {
         *add({ payload: { feedback, type } }, { call, put }) {
-            const db = yield call(feedbackService.get);
-            db.feedback.insert({ feedback, type });
+            yield call(feedbackService.add, { feedback, type });
             yield put({ type: 'query' });
         },
         *query({ payload }, { call, put }) {
