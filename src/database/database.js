@@ -6,11 +6,6 @@ const collections = [
     {
         name: 'feedback',
         schema: require('./schema.js').default,
-        methods: {
-            hpPercent() {
-                return this.hp / this.maxHP * 100;
-            }
-        },
         sync: true
     }
 ];
@@ -20,7 +15,7 @@ let dbPromise = null;
 
 const _create = async () => {
     console.log('DatabaseService: creating database..');
-    const db = await RxDB.create({name: 'heroesreactdb', adapter: 'idb', password: 'myLongAndStupidPassword'});
+    const db = await RxDB.create({name: 'ff', adapter: 'idb', password: 'myLongAndStupidPassword'});
     console.log('DatabaseService: created database');
 
     // show leadership in title

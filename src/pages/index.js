@@ -21,6 +21,53 @@ const { TextArea } = Input;
 
 const { Option } = Select;
 
+/**
+ * rxDocument 转换为对应的 obj
+ * @param {Array} feedbackList
+ */
+const feedbackFilter = feedbackList => {
+  const feedbackMap = {
+    smile: [],
+    meh: [],
+    frown: [],
+  };
+  feedbackList.map(document => {
+    const type = document.get('type');
+    const feedback = document.get('feedback');
+    feedbackMap[type].push(feedback);
+    return true;
+  });
+  return feedbackMap;
+};
+
+const FeedbackCardList = props => {
+  const { color, feedbackList } = props;
+  const itemList = feedbackList.map((feedback, index) => {
+    return (
+      <Timeline.Item color={color} key={index}>
+        <Card>
+          <p>{feedback}</p>
+        </Card>
+      </Timeline.Item>
+    );
+  });
+  const emptyInfo = () => {
+    return (
+      <Timeline.Item color={color}>
+        <Card>
+          <p>暂无数据</p>
+        </Card>
+      </Timeline.Item>
+    );
+  };
+
+  if (feedbackList !== undefined && feedbackList.length > 0) {
+    return <Timeline>{itemList}</Timeline>;
+  } else {
+    return <Timeline>{emptyInfo}</Timeline>;
+  }
+};
+
 const FeedbackForm = Form.create({ name: 'feedbackForm' })(
   class extends React.Component {
     render() {
@@ -119,6 +166,8 @@ class MainComponent extends React.Component {
   };
 
   render() {
+    const { smile, meh, frown } = feedbackFilter(this.props.list);
+    console.log(this.props.list.length);
     return (
       <Row gutter={8} className={styles.wrapper}>
         <FeedbackForm
@@ -162,36 +211,7 @@ class MainComponent extends React.Component {
             </div>
           </div>
           <div className={styles.itemBody}>
-            <Timeline>
-              <Timeline.Item color="green">
-                <Card>
-                  <p>
-                    工作内容更明确;工作规划更详细;工作划分帮助理清思路;站会让每天都有总结，及时沟通进度与问题;
-                  </p>
-                </Card>
-              </Timeline.Item>
-              <Timeline.Item color="green">
-                <Card>
-                  <p>
-                    工作内容更明确;工作规划更详细;工作划分帮助理清思路;站会让每天都有总结，及时沟通进度与问题;
-                  </p>
-                </Card>
-              </Timeline.Item>
-              <Timeline.Item color="green">
-                <Card>
-                  <p>
-                    工作内容更明确;工作规划更详细;工作划分帮助理清思路;站会让每天都有总结，及时沟通进度与问题;
-                  </p>
-                </Card>
-              </Timeline.Item>
-              <Timeline.Item color="green">
-                <Card>
-                  <p>
-                    工作内容更明确;工作规划更详细;工作划分帮助理清思路;站会让每天都有总结，及时沟通进度与问题;
-                  </p>
-                </Card>
-              </Timeline.Item>
-            </Timeline>
+            <FeedbackCardList feedbackList={smile} color="green" />
           </div>
         </Col>
         <Col span={8} className={styles.item}>
@@ -226,9 +246,9 @@ class MainComponent extends React.Component {
             </div>
           </div>
           <div className={styles.itemBody}>
-            <Timeline>
-              <Timeline.Item>无数据</Timeline.Item>
-            </Timeline>
+            <div className={styles.itemBody}>
+              <FeedbackCardList feedbackList={meh} color="blue" />
+            </div>
           </div>
         </Col>
         <Col span={8} className={styles.item}>
@@ -264,9 +284,9 @@ class MainComponent extends React.Component {
             </div>
           </div>
           <div className={styles.itemBody}>
-            <Timeline>
-              <Timeline.Item color="red">无数据</Timeline.Item>
-            </Timeline>
+            <div className={styles.itemBody}>
+              <FeedbackCardList feedbackList={frown} color="red" />
+            </div>
           </div>
         </Col>
       </Row>
@@ -275,8 +295,6 @@ class MainComponent extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log('STATE');
-  console.log(state);
   return {
     list: state.feedback.feedbackList,
     visible: state.feedback.visible,

@@ -13,8 +13,6 @@ export default {
         payload: { list },
       },
     ) {
-      console.log('LIST');
-      console.log(list);
       return { feedbackList: list, visible: false };
     },
     showModal(state) {
@@ -43,7 +41,9 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/') {
-          dispatch({ type: 'fetch', payload: {} });
+          dispatch({
+            type: "query"
+          })
         }
       });
     },
