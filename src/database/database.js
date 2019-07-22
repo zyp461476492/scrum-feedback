@@ -1,6 +1,6 @@
 import RxDB from 'rxdb';
 
-RxDB.plugin(require('pouchdb-adapter-idb'));
+RxDB.plugin(require('pouchdb-adapter-node-websql'));
 
 const collections = [
   {
@@ -15,9 +15,8 @@ let dbPromise = null;
 const _create = async () => {
   console.log('DatabaseService: creating database..');
   const db = await RxDB.create({
-    name: 'feedbacktest',
-    adapter: 'idb',
-    password: 'myLongAndStupidPassword',
+    name: 'feedbackdb',
+    adapter: 'websql',
     multiInstance: false,
   });
   console.log('DatabaseService: created database');
@@ -31,6 +30,11 @@ const _create = async () => {
   // create collections
   console.log('DatabaseService: create collections');
   await Promise.all(collections.map(colData => db.collection(colData)));
+
+  // sync remote collection
+  await db.feedback.sync({
+    remote: 'http://localhost:1234/db/feedback'
+  });
 
   return db;
 };
