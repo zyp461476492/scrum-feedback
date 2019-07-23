@@ -1,6 +1,8 @@
 import RxDB from 'rxdb';
 
-RxDB.plugin(require('pouchdb-adapter-node-websql'));
+import * as PouchHttpPlugin from 'pouchdb-adapter-http';
+RxDB.plugin(PouchHttpPlugin);
+RxDB.plugin(require('pouchdb-adapter-idb'));
 
 const collections = [
   {
@@ -16,16 +18,10 @@ const _create = async () => {
   console.log('DatabaseService: creating database..');
   const db = await RxDB.create({
     name: 'feedbackdb',
-    adapter: 'websql',
+    adapter: 'idb',
     multiInstance: false,
   });
   console.log('DatabaseService: created database');
-
-  // show leadership in title
-  db.waitForLeadership().then(() => {
-    console.log('isLeader now');
-    document.title = '♛ ' + document.title;
-  });
 
   // create collections
   console.log('DatabaseService: create collections');
@@ -33,7 +29,7 @@ const _create = async () => {
 
   // sync remote collection
   await db.feedback.sync({
-    remote: 'http://localhost:1234/db/feedback'
+    remote: 'http://172.22.9.99:1234/db/feedback',
   });
 
   return db;

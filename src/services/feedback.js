@@ -7,5 +7,5 @@ export async function add({ feedback, type }) {
 
 export async function query() {
   const db = await getDB();
-  return db.feedback.find().exec();
+  return db.feedback.find();
 }

@@ -33,7 +33,11 @@ export default {
       yield put({ type: 'query' });
     },
     *query({ payload }, { call, put }) {
-      const list = yield call(feedbackService.query);
+      const query = yield call(feedbackService.query);
+      yield query.$.subscribe(results => {
+        put({ type: 'query', payload: {} });
+      });
+      const list = yield query.exec();
       yield put({ type: 'fetch', payload: { list } });
     },
   },
@@ -42,8 +46,8 @@ export default {
       return history.listen(({ pathname }) => {
         if (pathname === '/') {
           dispatch({
-            type: "query"
-          })
+            type: 'query',
+          });
         }
       });
     },
